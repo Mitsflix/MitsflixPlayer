@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">চালু: যে শব্দের জন্য ডিভাইসে কোনো ডিকোডার নেই, যেমন DTS, TrueHD বা MP2, ExoPlayer তাও ডিকোড করতে পারে। ডিভাইসের নিজস্ব ডিকোডারই আগে ব্যবহার হয়। বন্ধ: ExoPlayer শুধু ডিভাইসের ডিকোডার ব্যবহার করে। mpv সবসময় FFmpeg দিয়ে ডিকোড করে। এটি বদলালে Mitsflix Player রিস্টার্ট হয়।</string>
     <string name="settings_ffmpeg_audio_restart_message">Mitsflix Player রিস্টার্ট হওয়ার পর অডিও ডিকোডার বদলাবে।</string>
     <string name="settings_app_startup_description">Mitsflix Player চালু হলে কী খুলবে</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">একই ওয়াই-ফাইয়ের ব্রাউজারযুক্ত যেকোনো ডিভাইসে — ফোন, কম্পিউটার বা অন্য টিভি — QR স্ক্যান করুন (বা URL খুলুন), এই PIN দিন, আপনার Mitsflix Player ব্যাকআপ ফাইল বেছে পাঠান। তারপর কী ফেরাবেন তা এখানে বাছুন।</string>
     <string name="settings_catchup_player_internal">Mitsflix Player প্লেয়ার</string>
     <string name="settings_sources_probe_warning">অনেক সরবরাহকারী কখনোই জানায় না আপনি একসঙ্গে কতগুলি চ্যানেল দেখতে পারবেন, তাই Mitsflix Player কয়েকটি চ্যানেল খুলে কোনগুলি টিকে থাকে তা দেখে এটি নির্ণয় করে। এখন যা চলছে সব বন্ধ হয়ে যাবে, এবং এতে দুই মিনিট পর্যন্ত লাগতে পারে।</string>

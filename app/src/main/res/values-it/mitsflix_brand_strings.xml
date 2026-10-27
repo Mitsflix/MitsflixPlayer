@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">Attivo: ExoPlayer può decodificare anche l\'audio per cui il dispositivo non ha un decoder, come DTS, TrueHD o MP2. I decoder del dispositivo restano prioritari. Disattivo: ExoPlayer usa solo i decoder del dispositivo. mpv decodifica sempre con FFmpeg. Modificarlo riavvia Mitsflix Player.</string>
     <string name="settings_ffmpeg_audio_restart_message">Il decoder audio cambia dopo il riavvio di Mitsflix Player.</string>
     <string name="settings_app_startup_description">Cosa apre Mitsflix Player all\'avvio</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">Su qualsiasi dispositivo con browser sulla stessa Wi-Fi — telefono, computer o un’altra TV — scansiona il QR (o apri l’URL), inserisci questo PIN, scegli il file di backup di Mitsflix Player e invialo. Poi scegli qui cosa ripristinare.</string>
     <string name="settings_catchup_player_internal">Player di Mitsflix Player</string>
     <string name="settings_sources_probe_warning">Molti provider non dicono mai quanti canali puoi guardare contemporaneamente, così Mitsflix Player lo scopre aprendone alcuni e vedendo quali resistono. Tutto ciò che è in riproduzione si fermerà e l’operazione può richiedere fino a due minuti.</string>

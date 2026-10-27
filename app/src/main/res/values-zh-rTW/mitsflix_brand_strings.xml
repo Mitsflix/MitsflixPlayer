@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">開啟：ExoPlayer 也能解碼裝置沒有解碼器的音訊，例如 DTS、TrueHD 或 MP2。裝置本身的解碼器仍然優先。關閉：ExoPlayer 只使用裝置的解碼器。mpv 一律使用 FFmpeg 解碼。變更後 Mitsflix Player 會重新啟動。</string>
     <string name="settings_ffmpeg_audio_restart_message">音訊解碼器會在 Mitsflix Player 重新啟動後切換。</string>
     <string name="settings_app_startup_description">Mitsflix Player 啟動時開啟的內容</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">在同一 Wi-Fi 下任何有瀏覽器的裝置（手機、電腦或另一台電視）上掃描 QR 碼（或開啟網址），輸入此 PIN，選擇你的 Mitsflix Player 備份檔案並傳送。接著在這裡選擇要還原的內容。</string>
     <string name="settings_catchup_player_internal">Mitsflix Player 播放器</string>
     <string name="settings_sources_probe_warning">許多供應商從不說明你可以同時觀看多少個頻道，因此 Mitsflix Player 會開啟幾個頻道，看看哪些能持續播放來判斷。目前正在播放的內容會停止，此過程最多需要兩分鐘。</string>

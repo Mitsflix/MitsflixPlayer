@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">تشغيل: يمكن لـ ExoPlayer أيضًا فك ترميز الصوت الذي لا يملك الجهاز وحدة فك ترميز له، مثل DTS أو TrueHD أو MP2. تبقى الأولوية لوحدات فك الترميز الخاصة بالجهاز. إيقاف: يستخدم ExoPlayer وحدات فك ترميز الجهاز فقط. يفك mpv الترميز دائمًا باستخدام FFmpeg. يؤدي تغيير هذا الإعداد إلى إعادة تشغيل Mitsflix Player.</string>
     <string name="settings_ffmpeg_audio_restart_message">تتغير وحدة فك ترميز الصوت بعد إعادة تشغيل Mitsflix Player.</string>
     <string name="settings_app_startup_description">ما يفتحه Mitsflix Player عند بدء تشغيله</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">على أي جهاز فيه متصفح على شبكة Wi-Fi نفسها — هاتف أو حاسوب أو تلفاز آخر — امسح رمز QR (أو افتح العنوان)، وأدخل رمز PIN هذا، واختر ملف النسخة الاحتياطية من Mitsflix Player وأرسله. ثم تختار هنا ما تريد استعادته.</string>
     <string name="settings_catchup_player_internal">مشغّل Mitsflix Player</string>
     <string name="settings_sources_probe_warning">لا يذكر كثير من المزوّدين عدد القنوات التي يمكنك مشاهدتها في وقت واحد، لذا يكتشف Mitsflix Player ذلك بفتح بضع قنوات ومعرفة أيها يستمر. سيتوقف كل ما يعمل الآن، وقد يستغرق هذا حتى دقيقتين.</string>

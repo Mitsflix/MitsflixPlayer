@@ -167,8 +167,10 @@ jobs:
         run: |
           if [ "$IS_TAG" = "true" ]; then
             NAME="${GITHUB_REF_NAME#v}"                 # tag v1.2.0 -> 1.2.0
-            IFS='.' read -r MA MI PA <<< "$NAME"
-            CODE=$(( ${MA:-0} * 10000 + ${MI:-0} * 100 + ${PA:-0} ))   # 1.2.0 -> 10200
+            # Mitsflix: an optional 4th number is a Mitsflix-only update on top of that OwnTV
+            # version (v5.2.1.1). 5.2.1 -> 5020100, 5.2.1.1 -> 5020101, 5.2.2 -> 5020200.
+            IFS='.' read -r MA MI PA MB <<< "$NAME"
+            CODE=$(( ${MA:-0} * 1000000 + ${MI:-0} * 10000 + ${PA:-0} * 100 + ${MB:-0} ))
             [ "$CODE" -gt 0 ] || CODE=1
           else
             # Dev (non-tag) builds mirror the local-build fallback in app/build.gradle.kts:
@@ -313,12 +315,19 @@ jobs:
           #
           # Take "## <tag>" up to the next "## v" header; the header may carry a date/"unreleased"
           # tail ("## v4.1.5 — 2026-07-26") or nothing at all, so match the version as a whole word.
-          if [ -f CHANGELOG.md ]; then
+          # Mitsflix: Mitsflix-only versions (v5.2.1.1) are described in CHANGELOG-MITSFLIX.md;
+          # OwnTV versions in OwnTV's CHANGELOG.md.
+          : > dist/RELEASE_NOTES.md
+          for LOG in CHANGELOG-MITSFLIX.md CHANGELOG.md; do
+            [ -s dist/RELEASE_NOTES.md ] && break
+            [ -f "$LOG" ] || continue
             awk -v ver="$TAG" '
               $0 ~ ("^## " ver "([ \t]|$)") { flag=1; next }
               /^## v/ && flag { flag=0 }
               flag { print }
-            ' CHANGELOG.md > dist/RELEASE_NOTES.md || true
+            ' "$LOG" > dist/RELEASE_NOTES.md || true
+          done
+          if [ -s dist/RELEASE_NOTES.md ]; then
             # Trim leading/trailing blank lines.
             sed -i -e '/./,$!d' dist/RELEASE_NOTES.md
             awk 'NF{p=NR} {a[NR]=$0} END{for(i=1;i<=p;i++) print a[i]}' \

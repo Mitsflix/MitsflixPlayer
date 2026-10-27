@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">Til: ExoPlayer kan også afkode lyd, som enheden ikke har en dekoder til, f.eks. DTS, TrueHD eller MP2. Enhedens egne dekodere kommer stadig først. Fra: ExoPlayer bruger kun enhedens dekodere. mpv afkoder altid med FFmpeg. En ændring genstarter Mitsflix Player.</string>
     <string name="settings_ffmpeg_audio_restart_message">Lyddekoderen skifter, når Mitsflix Player er genstartet.</string>
     <string name="settings_app_startup_description">Hvad Mitsflix Player åbner ved start</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">På en vilkårlig enhed med browser på samme wi-fi – telefon, computer eller et andet tv – scan QR-koden (eller åbn URL’en), indtast denne PIN-kode, vælg din Mitsflix Player-sikkerhedskopi, og send den. Du vælger derefter her, hvad der skal gendannes.</string>
     <string name="settings_catchup_player_internal">Mitsflix Player-afspiller</string>
     <string name="settings_sources_probe_warning">Mange udbydere oplyser aldrig, hvor mange kanaler du må se samtidig, så Mitsflix Player finder ud af det ved at åbne nogle stykker og se, hvilke der overlever. Alt, der afspilles nu, stopper, og det kan tage op til to minutter.</string>

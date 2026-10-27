@@ -20,6 +20,7 @@
     <string name="settings_ffmpeg_audio_description">Be: az ExoPlayer olyan hangot is dekódolhat, amelyhez az eszköznek nincs dekódere, például DTS, TrueHD vagy MP2. Az eszköz saját dekóderei továbbra is elsőbbséget élveznek. Ki: az ExoPlayer csak az eszköz dekódereit használja. Az mpv mindig FFmpeggel dekódol. A módosítás újraindítja az Mitsflix Player-t.</string>
     <string name="settings_ffmpeg_audio_restart_message">A hangdekóder az Mitsflix Player újraindítása után vált.</string>
     <string name="settings_app_startup_description">Mit nyit meg az Mitsflix Player induláskor</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">Bármelyik böngészős eszközön ugyanazon a Wi-Fin – telefonon, számítógépen vagy egy másik tévén – olvasd be a QR-kódot (vagy nyisd meg az URL-t), add meg ezt a PIN-t, válaszd ki az Mitsflix Player mentésfájlodat, és küldd el. Azt, hogy mit állíts vissza, itt választod ki.</string>
     <string name="settings_catchup_player_internal">Mitsflix Player lejátszó</string>
     <string name="settings_sources_probe_warning">Sok szolgáltató soha nem árulja el, hány csatornát nézhet egyszerre, ezért az Mitsflix Player úgy deríti ki, hogy megnyit néhányat, és megnézi, melyik marad életben. Minden, ami most szól, le fog állni, és ez akár két percig is eltarthat.</string>

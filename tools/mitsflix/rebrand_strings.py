@@ -10,6 +10,7 @@ import glob, os, re, shutil, subprocess, sys, tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DST = os.path.join(ROOT, "app/src/main/res")
 NEW_NAME = "Mitsflix Player"
+GOLD_NAME = "Mitsflix Gold"
 # Strings about OwnTV's own services/projects stay as they are (they really are OwnTV's).
 SKIP = re.compile(r"worker|fair_share|open_subtitles|translat|contribution|app_name|common_own_tv_user")
 ELEMENT = re.compile(r'(<(string|plurals)\b[^>]*\bname="([^"]+)"[^>]*>.*?</\2>)', re.S)
@@ -39,6 +40,10 @@ def main() -> None:
                 if "donottranslate" in f:
                     continue
                 for el, _kind, name in ELEMENT.findall(open(f, encoding="utf-8").read()):
+                    if name == "settings_accent_teal":
+                        # The default accent is Mitsflix gold (ui/theme/MitsflixTheme.kt).
+                        out.append('    <string name="settings_accent_teal">' + GOLD_NAME + "</string>")
+                        continue
                     if "OwnTV" in el and not SKIP.search(name):
                         out.append("    " + el.replace("an OwnTV", "a " + NEW_NAME).replace("An OwnTV", "A " + NEW_NAME).replace("OwnTV", NEW_NAME))
             if not out:

@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">オン：ExoPlayer は、デバイスにデコーダーがない音声（DTS、TrueHD、MP2 など）もデコードできます。デバイス自身のデコーダーが引き続き優先されます。オフ：ExoPlayer はデバイスのデコーダーだけを使います。mpv は常に FFmpeg でデコードします。変更すると Mitsflix Player が再起動します。</string>
     <string name="settings_ffmpeg_audio_restart_message">音声デコーダーは Mitsflix Player の再起動後に切り替わります。</string>
     <string name="settings_app_startup_description">Mitsflix Playerの起動時に開く画面</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">同じ Wi-Fi にあるブラウザー付きの任意の機器（スマホ、パソコン、別のテレビ）で QR を読み取る（または URL を開く）、この PIN を入力して Mitsflix Player のバックアップファイルを選んで送信します。復元する内容はここで選びます。</string>
     <string name="settings_catchup_player_internal">Mitsflix Playerプレーヤー</string>
     <string name="settings_sources_probe_warning">同時に視聴できるチャンネル数を知らせないプロバイダーは少なくありません。そこで Mitsflix Player はいくつか実際に開き、どれが続くかを見て判断します。再生中のものはすべて停止し、最大で 2 分ほどかかります。</string>

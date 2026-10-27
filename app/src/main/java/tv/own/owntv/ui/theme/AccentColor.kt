@@ -22,7 +22,7 @@ val AccentColor.labelRes: Int
         AccentColor.AMBER -> R.string.settings_accent_amber
     }
 
-fun AccentColor.primary(isDark: Boolean) = Color(roles(isDark).primary)
-fun AccentColor.onPrimary(isDark: Boolean) = Color(roles(isDark).onPrimary)
-fun AccentColor.primaryContainer(isDark: Boolean) = Color(roles(isDark).primaryContainer)
-fun AccentColor.onPrimaryContainer(isDark: Boolean) = Color(roles(isDark).onPrimaryContainer)
+fun AccentColor.primary(isDark: Boolean) = MitsflixTheme.preset(this, isDark)?.primary ?: Color(roles(isDark).primary)
+fun AccentColor.onPrimary(isDark: Boolean) = MitsflixTheme.preset(this, isDark)?.onPrimary ?: Color(roles(isDark).onPrimary)
+fun AccentColor.primaryContainer(isDark: Boolean) = MitsflixTheme.preset(this, isDark)?.primaryContainer ?: Color(roles(isDark).primaryContainer)
+fun AccentColor.onPrimaryContainer(isDark: Boolean) = MitsflixTheme.preset(this, isDark)?.onPrimaryContainer ?: Color(roles(isDark).onPrimaryContainer)

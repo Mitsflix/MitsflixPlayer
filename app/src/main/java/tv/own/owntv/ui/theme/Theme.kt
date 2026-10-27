@@ -105,16 +105,16 @@ fun OwnTVTheme(
         ThemeMode.SYSTEM -> systemInDarkTheme
     }
 
-    val colors = ownTvColors(
+    val colors = MitsflixTheme.colors(ownTvColors(
         isDark = useDark,
         accent = accent,
         customAccent = customAccent,
         focusHighlight = focusHighlight,
-    )
+    ))
 
     CompositionLocalProvider(
         LocalOwnTVColors provides colors,
-        LocalStagePalette provides if (useDark) StagePalette.Dark else StagePalette.Light,
+        LocalStagePalette provides MitsflixTheme.stage(if (useDark) StagePalette.Dark else StagePalette.Light),
         LocalThemeMode provides themeMode,
         LocalFocusBorderWidth provides focusBorderWidthDp.dp,
         LocalAnimationLevel provides animationLevel,

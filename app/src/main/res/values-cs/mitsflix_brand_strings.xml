@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">Zapnuto: ExoPlayer umí dekódovat i zvuk, pro který zařízení nemá dekodér, například DTS, TrueHD nebo MP2. Vlastní dekodéry zařízení mají stále přednost. Vypnuto: ExoPlayer používá jen dekodéry zařízení. mpv vždy dekóduje pomocí FFmpeg. Změna restartuje Mitsflix Player.</string>
     <string name="settings_ffmpeg_audio_restart_message">Zvukový dekodér se změní po restartu Mitsflix Player.</string>
     <string name="settings_app_startup_description">Co Mitsflix Player otevře při spuštění</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">Na libovolném zařízení s prohlížečem ve stejné Wi-Fi — telefonu, počítači nebo jiné televizi — naskenujte QR (nebo otevřete adresu), zadejte tento PIN, vyberte soubor zálohy Mitsflix Player a odešlete ho. Co obnovit, pak zvolíte zde.</string>
     <string name="settings_catchup_player_internal">Přehrávač Mitsflix Player</string>
     <string name="settings_sources_probe_warning">Mnozí poskytovatelé nikdy neuvedou, kolik kanálů můžete sledovat najednou, a tak to Mitsflix Player zjistí tím, že jich několik otevře a sleduje, které vydrží. Vše, co právě běží, se zastaví a může to trvat až dvě minuty.</string>

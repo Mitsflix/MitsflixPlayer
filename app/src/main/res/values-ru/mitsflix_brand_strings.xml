@@ -18,6 +18,7 @@
     <string name="settings_ffmpeg_audio_description">Вкл.: ExoPlayer может декодировать и звук, для которого на устройстве нет декодера, например DTS, TrueHD или MP2. Собственные декодеры устройства по-прежнему имеют приоритет. Выкл.: ExoPlayer использует только декодеры устройства. mpv всегда декодирует через FFmpeg. При изменении Mitsflix Player перезапустится.</string>
     <string name="settings_ffmpeg_audio_restart_message">Аудиодекодер сменится после перезапуска Mitsflix Player.</string>
     <string name="settings_app_startup_description">Какой экран Mitsflix Player открывает при запуске</string>
+    <string name="settings_accent_teal">Mitsflix Gold</string>
     <string name="settings_restore_remote_description">На любом устройстве с браузером в той же сети Wi-Fi — телефоне, компьютере или другом телевизоре — отсканируйте QR-код (или откройте адрес), введите этот PIN, выберите файл резервной копии Mitsflix Player и отправьте его. Затем здесь выберите, что восстановить.</string>
     <string name="settings_catchup_player_internal">Плеер Mitsflix Player</string>
     <string name="settings_sources_probe_warning">Многие провайдеры не сообщают, сколько каналов можно смотреть одновременно, поэтому Mitsflix Player выясняет это, открывая несколько каналов и наблюдая, какие из них продолжают работать. Всё, что сейчас воспроизводится, остановится, и это может занять до двух минут.</string>
