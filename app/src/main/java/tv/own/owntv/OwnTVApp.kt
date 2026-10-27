@@ -136,6 +136,8 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
                 GlobalContext.get().get<tv.own.owntv.core.settings.SettingsRepository>().applyStageDefaults()
             }
         }
+        // Mitsflix: Cloudflare DNS by default, and guides for playlists added before guides were automatic.
+        appScope.launch { runCatching { MitsflixDefaults.apply(this@OwnTVApp) } }
         // Sports: core decides from Auto rebuild whether the stored board is due ("on every app start",
         // or older than the chosen hours). It reads one small file and touches no database.
         appScope.launch {

@@ -8,4 +8,6 @@ The bullets under each version are what the app shows as "What's new".
 - **New Mitsflix look: black and gold** — warm black backgrounds and the Mitsflix gold accent throughout
 - **Mitsflix logo on the setup screens**
 - The accent colour "Mitsflix Gold" is the default; the other colours are still in Settings › Appearance
+- **TV guide added automatically** when you add a playlist — no more "Sync guide?" question
+- **Cloudflare DNS on by default** for more reliable connections (change it in Settings › DNS)
 - Small wording fixes

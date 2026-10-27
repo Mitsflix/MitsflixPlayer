@@ -1342,7 +1342,7 @@ class SettingsViewModel(
             done.source?.let { synced ->
                 if (epgRepository.guideUrl(synced) != null) {
                     pendingEpgSource = synced
-                    _epgSync.value = EpgSyncUi.Ask(synced.name)
+                    syncPendingEpg() // Mitsflix: add and sync the playlist's own guide straight away, no question
                 }
             }
             runCatching { refreshActiveTvHome(allowBrowsableRequest = true) }

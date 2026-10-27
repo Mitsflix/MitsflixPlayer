@@ -154,7 +154,10 @@ class SetupViewModel(
             val source = done.source ?: return@launch
             if (!importer.backgroundHandoff && epgRepository.guideUrl(source) != null) {
                 pendingEpgSource = source
-                _epgSync.value = tv.own.owntv.features.settings.EpgSyncUi.Ask(source.name)
+                syncPendingEpg() // Mitsflix: add and sync the playlist's own guide straight away, no question
+            } else if (epgRepository.guideUrl(source) != null) {
+                // Mitsflix: the playlist finished in the background, so fetch its guide in the background too.
+                viewModelScope.launch { tv.own.owntv.features.settings.runSemiAutoEpgSync(source, epgRepository, epgSourceStore) { } }
             }
         }
         importJob = job

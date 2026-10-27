@@ -50,6 +50,9 @@ android {
         buildConfigField("String", "MITSFLIX_SITE_URL", "\"https://mitsflix.com\"")
         buildConfigField("String", "MITSFLIX_RELEASE_REPO", "\"Mitsflix/MitsflixPlayer\"")
         buildConfigField("String", "MITSFLIX_SOURCE_REPO", "\"github.com/Mitsflix/MitsflixPlayer\"")
+        buildConfigField("String", "MITSFLIX_DEFAULTS_PREFS", "\"mitsflix_defaults\"")
+        buildConfigField("String", "MITSFLIX_DEFAULT_DNS_KEY", "\"dns_cloudflare_v1\"")
+        buildConfigField("String", "MITSFLIX_DEFAULT_EPG_KEY", "\"epg_existing_playlists_v1\"")
         minSdk = 26
         targetSdk = 36
         // CI injects these from the git tag (see .github/workflows/android.yml) so releases never
