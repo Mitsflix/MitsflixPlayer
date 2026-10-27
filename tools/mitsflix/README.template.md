@@ -14,6 +14,7 @@
 <p align="center">
   <a href="https://github.com/Mitsflix/MitsflixPlayer/releases/latest/download/MitsflixPlayer.apk"><img alt="Download" src="https://img.shields.io/badge/Download-MitsflixPlayer.apk-E3A72F?style=for-the-badge&logo=android&logoColor=white"></a>
   <a href="https://github.com/Mitsflix/MitsflixPlayer/releases/latest"><img alt="Latest version" src="https://img.shields.io/github/v/release/Mitsflix/MitsflixPlayer?style=for-the-badge&label=Version&color=111111"></a>
+  <a href="#-install"><img alt="Downloader code 6284643" src="https://img.shields.io/badge/Downloader%20code-6284643-E3A72F?style=for-the-badge"></a>
   <a href="https://mitsflix.com"><img alt="Get a playlist" src="https://img.shields.io/badge/Get%20a%20playlist-mitsflix.com-E3A72F?style=for-the-badge"></a>
 </p>
 
@@ -21,11 +22,13 @@
 
 ## 📲 Install
 
-**Downloader app (Fire TV / Android TV):** open Downloader and enter this address. It always installs the newest version:
+**Downloader app (Fire TV / Android TV):** open Downloader and enter the code
 
-```
-https://github.com/Mitsflix/MitsflixPlayer/releases/latest/download/MitsflixPlayer.apk
-```
+<h2 align="center">6284643</h2>
+
+It always installs the newest version. Prefer a full address? Enter
+`https://github.com/Mitsflix/MitsflixPlayer/releases/latest/download/MitsflixPlayer.apk`
+or `aftv.news/6284643` in any browser.
 
 **Any Android device:** tap the **Download** button above, open the file and allow installs from your browser when asked.
 
