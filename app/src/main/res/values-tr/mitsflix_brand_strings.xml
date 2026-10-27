@@ -12,7 +12,7 @@
     <string name="sports_alerts_footnote">Mitsflix Player kapalıyken uyarılar genellikle bir dakika içinde gelir. Telefon uzun süre ekranı kapalı ve hareketsiz kaldıysa Android bunları yaklaşık 15 dakikaya kadar geciktirebilir. Canlı skor kartı geciktirilmez.</string>
     <string name="sports_no_playlist_body">Skorlar, puan durumları ve uyarılar onsuz da çalışır. Oynatma listesiyle Mitsflix Player bu maçı gösteren her kanalı bulur.</string>
     <string name="sports_sport_buttons_description">Sporlarım: yalnızca seçtiklerin. Tüm sporlar: Mitsflix Player’nin bildiği her lig, yüklemesi daha uzun sürer.</string>
-    <string name="player_trailer_blocked_title">Bu fragman Mitsflix Player’de oynatılamıyor</string>
+    <string name="player_trailer_blocked_title">Bu fragma Mitsflix Player’de oynatılamıyor</string>
     <string name="settings_proxy_description">Tüm Mitsflix Player trafiğini ve oynatmayı bir HTTP proxy üzerinden gönderin.</string>
     <string name="settings_metadata_clear_advanced_message">TMDB API anahtarınız ve kendi sunucu adresiniz bu cihazdan silinecek ve Mitsflix Player, günlük payı olan yerleşik paylaşılan hizmete geri dönecek.</string>
     <string name="settings_ffmpeg_audio_description">Açık: ExoPlayer, cihazın kod çözücüsü olmayan sesleri de (ör. DTS, TrueHD veya MP2) çözebilir. Cihazın kendi kod çözücüleri yine önceliklidir. Kapalı: ExoPlayer yalnızca cihazın kod çözücülerini kullanır. mpv her zaman FFmpeg ile çözer. Değiştirmek Mitsflix Player uygulamasını yeniden başlatır.</string>

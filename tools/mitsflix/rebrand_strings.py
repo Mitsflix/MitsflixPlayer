@@ -40,7 +40,7 @@ def main() -> None:
                     continue
                 for el, _kind, name in ELEMENT.findall(open(f, encoding="utf-8").read()):
                     if "OwnTV" in el and not SKIP.search(name):
-                        out.append("    " + el.replace("OwnTV", NEW_NAME))
+                        out.append("    " + el.replace("an OwnTV", "a " + NEW_NAME).replace("An OwnTV", "A " + NEW_NAME).replace("OwnTV", NEW_NAME))
             if not out:
                 continue
             q = os.path.join(DST, os.path.basename(d))
