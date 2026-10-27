@@ -83,9 +83,14 @@ jobs:
 
       - name: Re-apply the Mitsflix wording and check it
         if: steps.find.outputs.new == 'true'
+        env:
+          VERSION: ${{ steps.find.outputs.version }}
         run: |
           set -euo pipefail
           python3 tools/mitsflix/rebrand_strings.py
+          # README: Mitsflix's own page, with the feature list refreshed from this OwnTV release.
+          git show "refs/tags/owntv/$VERSION:README.md" > "$RUNNER_TEMP/owntv-README.md" || true
+          python3 tools/mitsflix/build_readme.py "$RUNNER_TEMP/owntv-README.md"
           python3 tools/i18n/check_hardcoded_strings.py verify --bootstrap
 
       - name: Commit, tag and start the build
