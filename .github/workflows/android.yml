@@ -184,17 +184,26 @@ jobs:
       - name: Decode signing keystore (if configured)
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
-          # Runs on every push (not just tags) so dev builds are also signed RELEASE builds —
-          # required since R8 was enabled: only assembleRelease exercises shrinking/keep rules,
-          # and a release-signed dev APK installs straight over a published release for testing.
-          # Fork PRs have no secrets, so they fall back to a debug build below.
+          # Mitsflix: the release key is kept encrypted in signing/ and opened with the one
+          # KEYSTORE_PASSWORD secret. A KEYSTORE_BASE64 secret, if ever set, still wins.
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          elif [ -n "$KEYSTORE_PASSWORD" ] && [ -f signing/mitsflix-release.keystore.enc ]; then
+            openssl enc -d -aes-256-cbc -pbkdf2 -iter 300000 \
+              -in signing/mitsflix-release.keystore.enc -out "$RUNNER_TEMP/release.keystore" \
+              -pass env:KEYSTORE_PASSWORD
+          fi
+          if [ -s "$RUNNER_TEMP/release.keystore" ]; then
             echo "KEYSTORE_FILE=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
             echo "Release signing configured."
+          elif [ "$IS_TAG" = "true" ]; then
+            # Never publish a release customers couldn't update from: it must carry the Mitsflix key.
+            echo "::error::No signing key: add the KEYSTORE_PASSWORD secret (Settings > Secrets and variables > Actions)."
+            exit 1
           else
-            echo "No KEYSTORE_BASE64 secret set — building a debug-signed APK."
+            echo "No signing key — building a debug-signed APK."
           fi
 
       # Derives this release's edge key for the default metadata/subtitle service. Falls back to the
@@ -233,6 +242,9 @@ jobs:
           # it as the env var it always did.
         run: |
           chmod +x ./gradlew
+          # Mitsflix: one password covers the store and the key; the alias is fixed.
+          export KEY_ALIAS="${KEY_ALIAS:-mitsflix}"
+          export KEY_PASSWORD="${KEY_PASSWORD:-$KEYSTORE_PASSWORD}"
           if [ -n "$KEYSTORE_FILE" ]; then
             echo "Building signed release APKs (both ABI flavors)"
             ./gradlew assembleRelease --stacktrace
