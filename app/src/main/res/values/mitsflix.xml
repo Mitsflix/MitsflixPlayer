@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Mitsflix Player branding. These override the OwnTV core library's values of the same name and add
+  the "Get a playlist" texts. English only on purpose, so they are marked translatable="false".
+-->
+<resources>
+    <string name="app_name" translatable="false">Mitsflix Player</string>
+    <string name="common_own_tv_user" translatable="false">Mitsflix User</string>
+
+    <string name="mitsflix_wordmark" translatable="false">MITSFLIX</string>
+    <string name="mitsflix_get_playlist" translatable="false">Get a playlist</string>
+    <string name="mitsflix_get_playlist_line" translatable="false">No playlist yet? Get one from Mitsflix.</string>
+    <string name="mitsflix_get_playlist_title" translatable="false">Get a Mitsflix playlist</string>
+    <string name="mitsflix_get_playlist_body" translatable="false">Visit mitsflix.com on your phone or computer to get your playlist. Once you have your login details, come back here and add them.</string>
+    <string name="mitsflix_scan_qr" translatable="false">Scan with your phone camera to open the site.</string>
+    <string name="mitsflix_qr_description" translatable="false">QR code for mitsflix.com</string>
+    <string name="mitsflix_open_site" translatable="false">Open website</string>
+    <string name="mitsflix_add_playlist_now" translatable="false">Add playlist</string>
+    <string name="mitsflix_upstream_credit" translatable="false">Mitsflix Player is based on OwnTV by ahXN00, free software under the GNU GPL v3. Source code: github.com/Mitsflix/MitsflixPlayer</string>
+</resources>

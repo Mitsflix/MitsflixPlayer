@@ -2,7 +2,11 @@ package tv.own.owntv.features.setup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
@@ -25,6 +29,7 @@ fun AddSourceChooserScreen(
     modifier: Modifier = Modifier,
 ) {
     val rowsFocus = remember { FocusRequester() }
+    var showGetPlaylist by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) { runCatching { rowsFocus.requestFocus() } }
     val playlists = stringResource(R.string.settings_playlists)
     val hints = listOf(
@@ -40,6 +45,16 @@ fun AddSourceChooserScreen(
         rowsFocus = rowsFocus,
         settingsRoot = false,
     ) {
+        // Mitsflix: first row, so a new customer sees where to get a playlist before adding one.
+        val getPlaylist = stringResource(R.string.mitsflix_get_playlist)
+        StageSettingRow(
+            icon = OwnTVIcon.NETWORK,
+            title = getPlaylist,
+            desc = stringResource(R.string.mitsflix_get_playlist_line),
+            value = SettingValue.Opens(null),
+            onClick = { showGetPlaylist = true },
+            help = SettingHelp(getPlaylist, stringResource(R.string.mitsflix_get_playlist_body), hints = hints),
+        )
         val phone = stringResource(R.string.setup_from_phone)
         StageSettingRow(
             icon = OwnTVIcon.PHONE,
@@ -58,5 +73,8 @@ fun AddSourceChooserScreen(
             onClick = onManual,
             help = SettingHelp(here, stringResource(R.string.settings_help_add_type_here), hints = hints),
         )
+    }
+    if (showGetPlaylist) {
+        GetPlaylistDialog(onDismiss = { showGetPlaylist = false })
     }
 }

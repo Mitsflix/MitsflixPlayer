@@ -1,4 +1,4 @@
-name: Android CI
+name: Mitsflix Player build
 
 # Three jobs:
 #   verify-pin — core pin bumps ONLY. Seconds, no build. See its own note.
@@ -255,13 +255,13 @@ jobs:
             echo "ARM_SRC=$SRC" >> "$GITHUB_ENV"
           fi
 
-      - name: Name the APK (OwnTV-v<version>)
+      - name: Name the APK (MitsflixPlayer-v<version>)
         run: |
           mkdir -p dist
           if [ "$IS_TAG" = "true" ]; then
-            OUT="OwnTV-v${{ steps.ver.outputs.name }}.apk"
+            OUT="MitsflixPlayer-v${{ steps.ver.outputs.name }}.apk"
           else
-            OUT="OwnTV-dev-${GITHUB_SHA::7}.apk"
+            OUT="MitsflixPlayer-dev-${GITHUB_SHA::7}.apk"
           fi
           cp "$ARM_SRC" "dist/$OUT"
           echo "APK_OUT=$OUT" >> "$GITHUB_ENV"
@@ -270,12 +270,12 @@ jobs:
           # release: https://github.com/<repo>/releases/latest/download/OwnTV.apk
           # (used by the Fire TV Downloader code and any "always-latest" sideload link).
           if [ "$IS_TAG" = "true" ]; then
-            cp "$ARM_SRC" "dist/OwnTV.apk"
+            cp "$ARM_SRC" "dist/MitsflixPlayer.apk"
             # Separate x86_64 build for emulators / rare Intel boxes. Pinned to the version only —
             # no always-latest copy, since real devices (the Downloader audience) don't need it.
             if [ -n "$X86_SRC" ]; then
-              cp "$X86_SRC" "dist/OwnTV-x86_64-v${{ steps.ver.outputs.name }}.apk"
-              echo "Packaged dist/OwnTV-x86_64-v${{ steps.ver.outputs.name }}.apk"
+              cp "$X86_SRC" "dist/MitsflixPlayer-x86_64-v${{ steps.ver.outputs.name }}.apk"
+              echo "Packaged dist/MitsflixPlayer-x86_64-v${{ steps.ver.outputs.name }}.apk"
             fi
           fi
 
@@ -318,6 +318,8 @@ jobs:
             echo "See the commits for $TAG for details." \
               > dist/RELEASE_NOTES.md
           fi
+          # Mitsflix: OwnTV's notes, with the app's name changed.
+          sed -i 's/OwnTV/Mitsflix Player/g' dist/RELEASE_NOTES.md
           echo "--- Release notes ---"
           cat dist/RELEASE_NOTES.md
 
@@ -325,11 +327,11 @@ jobs:
         if: env.IS_TAG == 'true'
         uses: softprops/action-gh-release@v3
         with:
-          name: OwnTV ${{ github.ref_name }}
+          name: Mitsflix Player ${{ github.ref_name }}
           files: |
             dist/${{ env.APK_OUT }}
-            dist/OwnTV.apk
-            dist/OwnTV-x86_64-v${{ steps.ver.outputs.name }}.apk
+            dist/MitsflixPlayer.apk
+            dist/MitsflixPlayer-x86_64-v${{ steps.ver.outputs.name }}.apk
           body_path: dist/RELEASE_NOTES.md
           # Must stay false: it appends GitHub's auto commit/PR list under the body, which buries the
           # short in-app notes the updater dialog shows.

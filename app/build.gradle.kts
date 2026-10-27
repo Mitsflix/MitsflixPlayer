@@ -44,7 +44,12 @@ android {
     }
 
     defaultConfig {
-        applicationId = "tv.own.owntv"
+        applicationId = "com.mitsflix.player"
+        // Mitsflix Player branding constants (read through tv.own.owntv.MitsflixBrand).
+        buildConfigField("String", "MITSFLIX_SITE", "\"mitsflix.com\"")
+        buildConfigField("String", "MITSFLIX_SITE_URL", "\"https://mitsflix.com\"")
+        buildConfigField("String", "MITSFLIX_RELEASE_REPO", "\"Mitsflix/MitsflixPlayer\"")
+        buildConfigField("String", "MITSFLIX_SOURCE_REPO", "\"github.com/Mitsflix/MitsflixPlayer\"")
         minSdk = 26
         targetSdk = 36
         // CI injects these from the git tag (see .github/workflows/android.yml) so releases never

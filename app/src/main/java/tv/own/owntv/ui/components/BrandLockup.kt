@@ -57,23 +57,8 @@ private fun accentTriangle(): Color? {
  */
 @Composable
 fun BrandMark(icon: AppIcon, size: Dp, modifier: Modifier = Modifier, followAccent: Boolean = true) {
-    val small = size <= 32.dp
-    val accent = accentTriangle().takeIf { followAccent }
-    if (icon == AppIcon.PIXEL && !small) {
-        PixelMark(modifier.size(size), triangle = accent ?: Color(icon.accent))
-        return
-    }
-    Box(modifier.size(size)) {
-        Image(painterResource(if (small) icon.markSmall else icon.mark), contentDescription = null, modifier = Modifier.fillMaxSize())
-        if (accent != null && icon.isCard(small)) {
-            Image(
-                painterResource(if (small) R.drawable.owntv_mark_play_small else R.drawable.owntv_mark_play),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                colorFilter = ColorFilter.tint(accent),
-            )
-        }
-    }
+    // Mitsflix: one round logo whatever icon colour is set (the colours are an OwnTV feature).
+    Image(painterResource(R.drawable.mitsflix_mark), contentDescription = null, modifier = modifier.size(size))
 }
 
 /**
@@ -106,10 +91,12 @@ private val PixelPower = Color(CorePixelMark.POWER)
  */
 @Composable
 fun Wordmark(width: Dp, modifier: Modifier = Modifier, tv: Color = stageAccent.accent, own: Color = WordmarkCream) {
-    Box(modifier.width(width).height(width * 182f / 988f)) {
-        Image(painterResource(R.drawable.owntv_wordmark_own), null, Modifier.fillMaxSize(), colorFilter = ColorFilter.tint(own))
-        Image(painterResource(R.drawable.owntv_wordmark_tv), null, Modifier.fillMaxSize(), colorFilter = ColorFilter.tint(tv))
-    }
+    // Mitsflix: the gold MITSFLIX logo (800 × 356, transparent) in place of OwnTV's "owntv" letters.
+    Image(
+        painterResource(R.drawable.mitsflix_wordmark),
+        contentDescription = androidx.compose.ui.res.stringResource(R.string.app_name),
+        modifier = modifier.width(width).height(width * 356f / 800f),
+    )
 }
 
 val WordmarkCream = Color(0xFFFFF6EE)
@@ -125,11 +112,8 @@ fun BrandLockup(
     markSize: Int = 36,
     stacked: Boolean = false,
 ) {
-    val icon = rememberAppliedIcon()
     val parts = @Composable {
-        BrandMark(icon, markSize.dp)
-        // On a light theme "own" takes the text colour; the cream is for dark surfaces.
-        Wordmark((markSize * 2.75f).dp, own = if (tv.own.owntv.ui.theme.LocalStagePalette.current.isLight) tv.own.owntv.ui.theme.StageColors.Text else WordmarkCream)
+        Wordmark((markSize * 3.6f).dp)
     }
     if (stacked) {
         Column(

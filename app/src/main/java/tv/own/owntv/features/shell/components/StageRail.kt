@@ -317,9 +317,8 @@ private fun ColumnScope.RailBrand(open: Boolean) {
         horizontalArrangement = Arrangement.spacedBy(14.mpx),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        BrandMark(icon, 50.mpx)
-        // The wordmark, 130 wide (`.brandrow`, `wordmarkC()`).
-        Wordmark(130.mpx)
+        // Mitsflix: the logo carries its own emblem, so it stands alone, a little wider.
+        Wordmark(190.mpx)
     }
 }
 

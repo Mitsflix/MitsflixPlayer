@@ -1,0 +1,121 @@
+name: Follow OwnTV releases
+
+# Once a day: if OwnTV has published a release that Mitsflix Player doesn't have yet, merge it in,
+# re-apply the Mitsflix wording, tag the same version (e.g. v5.3.0) and start the build. The build
+# publishes a signed release, and installed copies of Mitsflix Player offer the update.
+#
+# If OwnTV changed the same lines Mitsflix changed, the merge stops and an issue is opened on this
+# repository explaining which files need a hand. Nothing is published in that case.
+on:
+  schedule:
+    - cron: "17 19 * * *" # 19:17 UTC = about 6am in Melbourne
+  workflow_dispatch:
+
+permissions:
+  contents: write # push the merge and the tag
+  actions: write # start the build workflow
+  issues: write # report a merge that needs a hand
+
+concurrency:
+  group: sync-owntv
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Find OwnTV's newest release
+        id: find
+        run: |
+          set -euo pipefail
+          git remote add owntv https://github.com/ahXN00/OwnTV.git
+          # Upstream tags go under owntv/ so they never clash with this repo's own release tags.
+          git fetch --quiet --no-tags owntv '+refs/tags/v*:refs/tags/owntv/v*'
+          LATEST=$(git tag -l 'owntv/v*' --sort=-v:refname | head -n1)
+          VERSION="${LATEST#owntv/}"
+          echo "OwnTV's newest release: $VERSION"
+          if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+            echo "Mitsflix Player already has $VERSION. Nothing to do."
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Merge it into Mitsflix Player
+        if: steps.find.outputs.new == 'true'
+        env:
+          VERSION: ${{ steps.find.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          git config user.name "Mitsflix sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git merge --no-ff --no-commit "refs/tags/owntv/$VERSION" || true
+
+          # Conflicts Mitsflix can settle on its own: files that are Mitsflix's (keep ours), OwnTV-only
+          # workflows Mitsflix deleted (keep deleted), and the generated strings (regenerated below).
+          for f in $(git diff --name-only --diff-filter=U); do
+            case "$f" in
+              README.md|.github/workflows/*|app/src/main/res/values*/mitsflix_brand_strings.xml)
+                if git cat-file -e "HEAD:$f" 2>/dev/null; then
+                  git checkout --ours -- "$f" && git add -- "$f"
+                else
+                  git rm -q -- "$f"
+                fi
+                ;;
+            esac
+          done
+
+          LEFT=$(git diff --name-only --diff-filter=U)
+          if [ -n "$LEFT" ]; then
+            git merge --abort
+            echo "$LEFT" > "$RUNNER_TEMP/conflicts.txt"
+            echo "::error::Merge conflicts in: $LEFT"
+            exit 1
+          fi
+
+      - name: Re-apply the Mitsflix wording and check it
+        if: steps.find.outputs.new == 'true'
+        run: |
+          set -euo pipefail
+          python3 tools/mitsflix/rebrand_strings.py
+          python3 tools/i18n/check_hardcoded_strings.py verify --bootstrap
+
+      - name: Commit, tag and start the build
+        if: steps.find.outputs.new == 'true'
+        env:
+          VERSION: ${{ steps.find.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git add -A
+          git commit -q -m "Merge OwnTV $VERSION"
+          git push origin HEAD:main
+          git tag "$VERSION"
+          git push origin "$VERSION"
+          # A tag pushed by this workflow doesn't start other workflows by itself, so start the build
+          # explicitly on the new tag (it then publishes the release like any tag build).
+          gh workflow run android.yml --ref "$VERSION"
+          echo "Merged OwnTV $VERSION; the build is running."
+
+      - name: Report a sync that needs a hand
+        if: failure() && steps.find.outputs.new == 'true'
+        env:
+          VERSION: ${{ steps.find.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -s "$RUNNER_TEMP/conflicts.txt" ]; then
+            WHY=$(printf 'OwnTV changed the same parts of these files that Mitsflix changed:\n\n%s' "$(sed 's/^/- `/; s/$/`/' "$RUNNER_TEMP/conflicts.txt")")
+          else
+            WHY="A step failed after merging; see the run log: $RUN_URL"
+          fi
+          BODY=$(printf 'OwnTV **%s** could not be added to Mitsflix Player automatically.\n\n%s\n\nNothing was published. Ask Claude to merge OwnTV %s into Mitsflix/MitsflixPlayer and fix it, then run "Follow OwnTV releases" again.' "$VERSION" "$WHY" "$VERSION")
+          gh issue create --title "OwnTV $VERSION needs a hand to merge" --body "$BODY"

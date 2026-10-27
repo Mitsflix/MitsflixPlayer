@@ -360,16 +360,7 @@ private fun DisplaySizeStep(onNext: () -> Unit, onBack: () -> Unit) {
         )
         // No restart prompt here: nothing is on the home screen yet, and the pick applies as soon as
         // the app is next in the background.
-        val icons = AppIcon.entries
-        val at = icons.indexOf(appIcon).coerceAtLeast(0)
-        StageSettingRow(
-            icon = OwnTVIcon.SPARKLE,
-            title = stringResource(R.string.settings_app_icon),
-            desc = stringResource(R.string.setup_line_app_icon),
-            value = SettingValue.Custom { AppIconSwatches(icons, appIcon) },
-            onClick = { pickIcon = true },
-            onStep = { dir -> vm.setAppIcon(icons[(at + dir + icons.size) % icons.size]) },
-        )
+        // Mitsflix: no app-icon colour row — every colour is the same Mitsflix icon.
         // The sample: a row's own type at the size it will really be.
         Row(
             Modifier
@@ -534,6 +525,10 @@ private fun AvatarStrip(ids: List<Int>, chosen: Int) {
 @Composable
 private fun AddContentStep(hasExisting: Boolean, onPhone: () -> Unit, onType: () -> Unit, onExisting: () -> Unit, onImport: () -> Unit, onSkip: () -> Unit) {
     val first = rememberFirstFocus()
+    var showGetPlaylist by rememberSaveable { mutableStateOf(false) }
+    if (showGetPlaylist) {
+        GetPlaylistDialog(onDismiss = { showGetPlaylist = false }, onAddNow = { showGetPlaylist = false; onType() })
+    }
     WizardFrame(
         step = WizardStep.PLAYLIST,
         title = stringResource(R.string.setup_add_playlist),
@@ -545,6 +540,8 @@ private fun AddContentStep(hasExisting: Boolean, onPhone: () -> Unit, onType: ()
     ) {
         WizardCards(
             listOfNotNull(
+                // Mitsflix: where to get a playlist, first, for customers who don't have one yet.
+                WizardCard(OwnTVIcon.NETWORK, stringResource(R.string.mitsflix_get_playlist), stringResource(R.string.mitsflix_get_playlist_line)) { showGetPlaylist = true },
                 WizardCard(OwnTVIcon.PHONE, stringResource(R.string.setup_from_phone), stringResource(R.string.setup_phone_card_line), onPhone),
                 WizardCard(OwnTVIcon.PENCIL, stringResource(R.string.settings_add_type_here), stringResource(R.string.settings_line_add_type_here), onType),
                 if (hasExisting) WizardCard(OwnTVIcon.PLAYLIST, stringResource(R.string.setup_existing), stringResource(R.string.setup_use_other_profile_playlists), onExisting) else null,
