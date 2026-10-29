@@ -9,5 +9,6 @@ The bullets under each version are what the app shows as "What's new".
 - **Mitsflix logo on the setup screens**
 - The accent colour "Mitsflix Gold" is the default; the other colours are still in Settings › Appearance
 - **TV guide added automatically** when you add a playlist — no more "Sync guide?" question
+- **More on Home:** Recent channels is now shown, and movie info and Now Trending come straight from TMDB
 - **Cloudflare DNS on by default** for more reliable connections (change it in Settings › DNS)
 - Small wording fixes
