@@ -53,6 +53,11 @@ android {
         buildConfigField("String", "MITSFLIX_DEFAULTS_PREFS", "\"mitsflix_defaults\"")
         buildConfigField("String", "MITSFLIX_DEFAULT_DNS_KEY", "\"dns_cloudflare_v1\"")
         buildConfigField("String", "MITSFLIX_DEFAULT_EPG_KEY", "\"epg_existing_playlists_v1\"")
+        buildConfigField("String", "MITSFLIX_DEFAULT_HOME_KEY", "\"home_recent_channels_v1\"")
+        buildConfigField("String", "MITSFLIX_DEFAULT_TMDB_KEY", "\"tmdb_key_applied\"")
+        // Mitsflix's own TMDB API key, from the TMDB_API_KEY repository secret. Blank = OwnTV's default.
+        val mitsflixTmdbKey = (System.getenv("TMDB_API_KEY") ?: "").trim().filter { it.isLetterOrDigit() }
+        buildConfigField("String", "MITSFLIX_TMDB_KEY", "\"$mitsflixTmdbKey\"")
         minSdk = 26
         targetSdk = 36
         // CI injects these from the git tag (see .github/workflows/android.yml) so releases never

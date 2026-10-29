@@ -1,0 +1,56 @@
+name: Publish Mitsflix updates
+
+# Mitsflix-only updates publish themselves: when the newest version in CHANGELOG-MITSFLIX.md (say
+# "## v5.2.1.2") has no release yet, this tags it and starts the build, which signs it and publishes the
+# release. Installed copies then offer the update. Adding the changelog entry IS the "publish" step.
+on:
+  push:
+    branches: [ main ]
+    paths: [ CHANGELOG-MITSFLIX.md ]
+  workflow_dispatch:
+
+permissions:
+  contents: write # push the tag
+  actions: write # start the build workflow
+
+concurrency:
+  group: mitsflix-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Tag the newest Mitsflix version and start the build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION=$(grep -m1 -oE '^## v[0-9]+(\.[0-9]+){2,3}' CHANGELOG-MITSFLIX.md | sed 's/^## //' || true)
+          if [ -z "$VERSION" ]; then
+            echo "No version heading in CHANGELOG-MITSFLIX.md. Nothing to do."
+            exit 0
+          fi
+          git fetch --quiet --tags origin
+          if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+            echo "$VERSION is already released. Nothing to do."
+            exit 0
+          fi
+          # Never publish something older than the current release: "latest" would go backwards.
+          NEWEST=$(git tag -l 'v[0-9]*' --sort=-v:refname | head -n1)
+          if [ -n "$NEWEST" ] && [ "$(printf '%s\n%s\n' "$NEWEST" "$VERSION" | sort -V | tail -n1)" != "$VERSION" ]; then
+            echo "::error::$VERSION is older than the current release $NEWEST. Use a number above $NEWEST (e.g. $NEWEST.1)."
+            exit 1
+          fi
+          git config user.name "Mitsflix release"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$VERSION"
+          git push origin "$VERSION"
+          # A tag pushed by a workflow doesn't start other workflows, so start the build on it explicitly.
+          gh workflow run android.yml --ref "$VERSION"
+          echo "Tagged $VERSION; the build is running and will publish the release."

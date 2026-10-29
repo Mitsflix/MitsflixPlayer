@@ -97,6 +97,8 @@ class SetupViewModel(
         viewModelScope.launch {
             val id = importer.createProfile(name, avatarId, isKids, pin)
             if (picture != null) profileDao.getById(id)?.let { profiles.setCustomAvatar(it, picture) }
+            // Mitsflix: Recent channels on for the new profile.
+            tv.own.owntv.MitsflixDefaults.showRecentChannels(org.koin.core.context.GlobalContext.get().get())
             onCreated(id)
         }
     }
