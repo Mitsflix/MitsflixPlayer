@@ -41,6 +41,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -478,9 +479,9 @@ fun PlayerHud(
             // tap on the left or right third skips back or forward (the Seek step). A tap on a control
             // is taken by the control itself and never reaches here.
             .pointerInput(isLive, duration > 0L) {
-                androidx.compose.foundation.gestures.detectTapGestures(
+                detectTapGestures(
                     onTap = { if (controlsVisible) controlsVisible = false else { controlsVisible = true; wakeTick++ } },
-                    onDoubleTap = { pos ->
+                    onDoubleTap = { pos: androidx.compose.ui.geometry.Offset ->
                         val third = size.width / 3f
                         val side = when { pos.x < third -> -1; pos.x > third * 2 -> 1; else -> 0 }
                         if (!isLive && duration > 0L && side != 0) {
