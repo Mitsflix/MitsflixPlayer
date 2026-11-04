@@ -639,9 +639,13 @@ fun StageSettingRow(
     val panel = LocalSettingsPanel.current
     var longAt by remember { mutableLongStateOf(0L) }
     val self = remember { FocusRequester() }
+    val inputMode = androidx.compose.ui.platform.LocalInputModeManager.current
     StageSurface(
         onClick = {
             if (android.os.SystemClock.uptimeMillis() - longAt > 800) {
+                // Mitsflix: a tap doesn't move remote focus, so on a touchscreen the row takes focus
+                // itself — its side panel (actions, help) then opens just as it does with a remote.
+                if (inputMode.inputMode == androidx.compose.ui.input.InputMode.Touch) runCatching { self.requestFocus() }
                 // A choice list this opens in the panel hands focus back here when it closes.
                 panel?.opener = self
                 onClick()

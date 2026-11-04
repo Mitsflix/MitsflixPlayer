@@ -424,12 +424,27 @@ private fun SourceRow(
         ),
         StageAction(OwnTVIcon.TRASH, stringResource(R.string.settings_sources_delete), onDelete, danger = true),
     )
+    // Mitsflix: on a touchscreen the actions panel never opens (it follows remote focus, which a tap
+    // doesn't move), so a tap shows the same actions in a popup instead. Remotes are unchanged.
+    val inputMode = androidx.compose.ui.platform.LocalInputModeManager.current
+    var touchMenu by remember { androidx.compose.runtime.mutableStateOf(false) }
+    if (touchMenu) {
+        tv.own.owntv.ui.stage.StagePopup(onDismiss = { touchMenu = false }, title = source.name, body = typeName, width = 640.mpx) {
+            StageActionColumn(
+                actions.map { act -> StageAction(act.icon, act.label, { touchMenu = false; act.onClick() }, danger = act.danger) },
+                back = null,
+            )
+        }
+    }
     StageSettingRow(
         icon = OwnTVIcon.PLAYLIST,
         title = source.name,
         desc = line.ifBlank { typeName },
         value = status?.let { SettingValue.Action(it) },
-        onClick = { runCatching { actionsFocus.requestFocus() } },
+        onClick = {
+            if (inputMode.inputMode == androidx.compose.ui.input.InputMode.Touch) { if (actions.isNotEmpty()) touchMenu = true }
+            else runCatching { actionsFocus.requestFocus() }
+        },
         keepPanel = keepPanel,
         help = SettingHelp(
             title = source.name,
