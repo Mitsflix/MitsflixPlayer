@@ -1,6 +1,10 @@
 package tv.own.owntv.ui.theme
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import tv.own.owntv.core.theme.AccentColor
 
 /**
@@ -84,4 +88,23 @@ object MitsflixTheme {
     val WashBottom = Color(0xFF0A0805)
     val GlowTop = Color(255, 196, 92)
     val GlowBottom = Color(214, 140, 40)
+
+    /** True on a phone or tablet (a touchscreen and no TV launcher), false on a TV or TV box. */
+    @Composable
+    fun isTouchDevice(): Boolean {
+        val context = LocalContext.current
+        return remember(context) {
+            val pm = context.packageManager
+            !pm.hasSystemFeature(android.content.pm.PackageManager.FEATURE_LEANBACK) &&
+                pm.hasSystemFeature(android.content.pm.PackageManager.FEATURE_TOUCHSCREEN)
+        }
+    }
+
+    /**
+     * The Cinematic details block's height when the user hasn't set one (Panel widths off). On a TV
+     * it's OwnTV's [stock]; on a phone or tablet nothing is focused until a tap (which plays the
+     * title), so the block would only ever be empty space — it's left out and the posters move up.
+     */
+    @Composable
+    fun cinematicDetailsHeight(stock: Dp): Dp = if (isTouchDevice()) Dp(0f) else stock
 }

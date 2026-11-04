@@ -10,6 +10,7 @@ import tv.own.owntv.core.epg.EpgSourceStore
 import tv.own.owntv.core.network.DohPresets
 import tv.own.owntv.core.repository.EpgRepository
 import tv.own.owntv.core.settings.SettingsRepository
+import tv.own.owntv.core.sync.work.CatalogSyncScheduler
 import tv.own.owntv.features.settings.runSemiAutoEpgSync
 
 /**
@@ -46,6 +47,16 @@ object MitsflixDefaults {
                     if (current != tmdbKey) settings.setTmdbApiKey(tmdbKey)
                     prefs.edit().putString(TMDB_APPLIED, tmdbKey).apply()
                 }
+            }
+        }
+
+        // Now Trending: OwnTV only fetches it every 5–8 days, so an install that tried before the
+        // Mitsflix TMDB key was in can sit without it for days. Rebuild it once, straight away.
+        if (tmdbKey.isNotBlank() && !prefs.getBoolean(TRENDING_REBUILT, false)) {
+            runCatching {
+                val scheduler = koin.get<CatalogSyncScheduler>()
+                koin.get<SourceDao>().getAllOnce().forEach { scheduler.enqueueTrendingRefresh(it.id, force = true) }
+                prefs.edit().putBoolean(TRENDING_REBUILT, true).apply()
             }
         }
 
@@ -89,4 +100,5 @@ object MitsflixDefaults {
     private val EPG_EXISTING get() = BuildConfig.MITSFLIX_DEFAULT_EPG_KEY
     private val HOME_RECENT get() = BuildConfig.MITSFLIX_DEFAULT_HOME_KEY
     private val TMDB_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_TMDB_KEY
+    private val TRENDING_REBUILT get() = BuildConfig.MITSFLIX_DEFAULT_TRENDING_KEY
 }

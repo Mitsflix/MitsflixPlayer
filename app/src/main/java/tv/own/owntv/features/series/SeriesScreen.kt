@@ -624,7 +624,7 @@ private fun SeriesGrid(
         val screenW = maxWidth
         fun fx(px: Int) = screenW * (px / 1920f)
         if (cinematic) {
-            val heroH = if (panelShares != null) maxHeight * (cinematicDetailsPct / 100f) else 464.mpx
+            val heroH = if (panelShares != null) maxHeight * (cinematicDetailsPct / 100f) else tv.own.owntv.ui.theme.MitsflixTheme.cinematicDetailsHeight(464.mpx) // Mitsflix: none on phones
             val toolTop = 122.mpx + heroH
             Box(Modifier.fillMaxSize().then(if (categoriesOpen) Modifier.graphicsLayer { alpha = 0.36f } else Modifier)) {
                 VodCinematicBackdrop(titleInfo?.backdropUrl, series = true, Modifier.align(Alignment.TopEnd))
