@@ -169,6 +169,9 @@ fun MoviesScreen(
     val moveState by vm.moveState.collectAsStateWithLifecycle()
     val categoryMoveState by vm.categoryMoveState.collectAsStateWithLifecycle()
     var contextMovie by remember { mutableStateOf<MovieEntity?>(null) }
+    // Mitsflix: the film whose details are open in the touch panel, and where it sits in the list.
+    var touchMovie by remember { mutableStateOf<Pair<MovieEntity, Int>?>(null) }
+    val touchInput = androidx.compose.ui.platform.LocalInputModeManager.current.inputMode == androidx.compose.ui.input.InputMode.Touch
     var contextCategory by remember { mutableStateOf<LiveRailItem?>(null) }
     // The rail row a category menu was opened from, kept after the menu closes so the cursor can go
     // back to that exact row. Held as a key, not an index: a Move changes the row's position.
@@ -622,7 +625,7 @@ fun MoviesScreen(
                                         width = 196.mpx, height = 294.mpx,
                                         progress = prog?.takeIf { it.durationMs > 0 }?.let { it.positionMs.toFloat() / it.durationMs },
                                         watched = done,
-                                        onClick = { startMovie(movie) },
+                                        onClick = { if (touchInput) { onMovieFocus(movie); touchMovie = movie to index } else startMovie(movie) },
                                         onLongClick = { openMenu(movie, index) },
                                         modifier = Modifier
                                             .gridFocusTarget(
@@ -740,7 +743,7 @@ fun MoviesScreen(
                                     placeholder = OwnTVIcon.MOVIES,
                                     progress = if (done || prog == null || prog.durationMs <= 0) null else prog.positionMs.toFloat() / prog.durationMs,
                                     mark = playlistMarks[movie.sourceId],
-                                    onClick = { startMovie(movie) },
+                                    onClick = { if (touchInput) { onMovieFocus(movie); touchMovie = movie to index } else startMovie(movie) },
                                     onLongClick = { openMenu(movie, index) },
                                     modifier = Modifier
                                         .gridFocusTarget(
@@ -792,7 +795,7 @@ fun MoviesScreen(
                                     compact = true,
                                     progress = prog?.takeIf { it.durationMs > 0 }?.let { it.positionMs.toFloat() / it.durationMs },
                                     watched = done,
-                                    onClick = { startMovie(movie) },
+                                    onClick = { if (touchInput) { onMovieFocus(movie); touchMovie = movie to index } else startMovie(movie) },
                                     onLongClick = { openMenu(movie, index) },
                                     modifier = Modifier
                                         .gridFocusTarget(
@@ -873,6 +876,37 @@ fun MoviesScreen(
     // Load the opened movie's downloaded subtitles so the menu can show "Delete subtitles".
     LaunchedEffect(contextMovie?.id) {
         contextMovieSubs = contextMovie?.let { runCatching { vm.downloadedSubtitles(it) }.getOrDefault(emptyList()) } ?: emptyList()
+    }
+
+    // Mitsflix: a tapped film's details, with Play and the rest under them (touchscreens only).
+    touchMovie?.let { (m, index) ->
+        val meta = selectedMovieMeta?.takeIf { it.movieId == m.id }?.cache
+        val info = selectedMovie?.takeIf { it.id == m.id }?.let { movieTitleInfo(it, meta, metadataMode.tmdbWins) }
+        val trailer = if (metadataMode.enrich) meta?.trailerKey else null
+        tv.own.owntv.features.shell.components.MitsflixTouchDetails(
+            info = info,
+            series = false,
+            buttons = listOfNotNull(
+                tv.own.owntv.features.shell.components.MitsflixTouchButton(stringResource(R.string.content_play), OwnTVIcon.PLAY, primary = true) {
+                    touchMovie = null; startMovie(m)
+                },
+                tv.own.owntv.features.shell.components.MitsflixTouchButton(
+                    stringResource(if (favoriteIds.contains(m.id)) R.string.content_remove_favourite else R.string.content_add_favourite), OwnTVIcon.FAVORITE,
+                ) { vm.toggleFavorite(m) },
+                trailer?.let { key ->
+                    tv.own.owntv.features.shell.components.MitsflixTouchButton(stringResource(R.string.content_play_trailer), OwnTVIcon.PLAY_CIRCLE) {
+                        touchMovie = null; trailerTitle = m.name; trailerVideoKey = key
+                    }
+                },
+                tv.own.owntv.features.shell.components.MitsflixTouchButton(stringResource(R.string.content_download), OwnTVIcon.DOWNLOADS) {
+                    if (downloadStates[m.id] != null) toast.show(alreadyDownloadedMessage) else vm.download(m)
+                },
+                tv.own.owntv.features.shell.components.MitsflixTouchButton(stringResource(R.string.content_key_options), OwnTVIcon.LIST) {
+                    touchMovie = null; openMenu(m, index)
+                },
+            ),
+            onDismiss = { touchMovie = null },
+        )
     }
 
     // Long-press (or the remote's Menu key) on a movie → ☰ Title options.
