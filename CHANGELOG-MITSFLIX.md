@@ -4,6 +4,10 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.1.3
+- **Categories now stay on screen** beside the channel list in Live TV, Movies and Series
+- Prefer them tucked away? Settings › Layout › Live TV layout › Stage, and Movies & Series layout › Cinematic
+
 ## v5.2.1.2
 - **Phones & tablets:** tap a playlist to Edit, Re-sync or Delete it, and tap any settings row to see its options
 - **Phones & tablets:** Movies and Series start straight with the posters, no empty space at the top

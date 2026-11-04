@@ -33,6 +33,18 @@ object MitsflixDefaults {
             }
         }
 
+        // Categories always on screen (OwnTV's "Separate" layouts) for Live TV, Movies and Series.
+        // The sliding-sheet layouts stay one setting away: Live TV layout › Stage, Movies & Series
+        // layout › Cinematic.
+        if (!prefs.getBoolean(CATEGORIES_SHOWN, false)) {
+            runCatching {
+                val settings = koin.get<SettingsRepository>()
+                settings.setLiveLayout(SettingsRepository.LiveLayout.SEPARATE)
+                settings.setVodLayout(SettingsRepository.VodLayout.SEPARATE)
+                prefs.edit().putBoolean(CATEGORIES_SHOWN, true).apply()
+            }
+        }
+
         // Home: show Recent channels (OwnTV hides that row by default), once per profile.
         showRecentChannels(context)
 
@@ -101,4 +113,5 @@ object MitsflixDefaults {
     private val HOME_RECENT get() = BuildConfig.MITSFLIX_DEFAULT_HOME_KEY
     private val TMDB_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_TMDB_KEY
     private val TRENDING_REBUILT get() = BuildConfig.MITSFLIX_DEFAULT_TRENDING_KEY
+    private val CATEGORIES_SHOWN get() = BuildConfig.MITSFLIX_DEFAULT_LAYOUT_KEY
 }
