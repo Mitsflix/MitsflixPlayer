@@ -168,6 +168,11 @@ open class MainActivity : ComponentActivity() {
         // postSplashScreenTheme (Theme.OwnTV), so the activity ends up in the same theme as before.
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
+        // Mitsflix: the layout is drawn for a landscape screen, so phones and tablets stay landscape
+        // (either way up). TVs are landscape already and are left alone.
+        if (!packageManager.hasSystemFeature(android.content.pm.PackageManager.FEATURE_LEANBACK)) {
+            requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        }
         val splashDeadline = SystemClock.uptimeMillis() + SPLASH_TIMEOUT_MS
         splash.setKeepOnScreenCondition { !contentReady && SystemClock.uptimeMillis() < splashDeadline }
         pendingDeepLink = LauncherDeepLink.parse(intent.data)
