@@ -4,6 +4,11 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.1.4
+- **Phones & tablets: tap a movie** to see its details — artwork, plot, cast — with Play, Favourite, Trailer, Download and more
+- **Phones & tablets: tap the screen while watching** to show or hide the controls (seek, next, subtitles, audio)
+- **Double-tap the left or right side** to skip back or forward in movies and episodes
+
 ## v5.2.1.3
 - **Categories now stay on screen** beside the channel list in Live TV, Movies and Series
 - Prefer them tucked away? Settings › Layout › Live TV layout › Stage, and Movies & Series layout › Cinematic
