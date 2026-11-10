@@ -26,6 +26,13 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
+    <!-- Settings › App › Auto start. From Android 10 an app may open itself from the background only
+         with "Display over other apps"; OwnTV asks for it when an auto-start option is turned on and
+         draws nothing over other apps. RECEIVE_BOOT_COMPLETED merges in from :core. The wake listener
+         is a specialUse foreground service: no other type describes waiting for the screen to come on. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <!-- TV-first app, but allow non-TV installs too: touchscreen optional, and leanback is NOT required
          (required=true blocked plain phones / non-TV armv7a boxes that don't report the leanback feature). -->
     <uses-feature
@@ -35,8 +42,14 @@
         android:name="android.software.leanback"
         android:required="false" />
 
-    <!-- Mitsflix: lets "Get a playlist" check whether a browser exists before offering "Open website". -->
+    <!-- Voice search hands the listening to the system's speech recogniser, so no microphone permission
+         is needed. From Android 11 the app can only see that recogniser if it names the action here;
+         without it Search would hide the microphone even where one exists. -->
+    <!-- Mitsflix: also lets "Get a playlist" check whether a browser exists before offering "Open website". -->
     <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
@@ -89,7 +102,9 @@
              configChanges: a remote waking up (keyboard/navigation), an HDR or frame-rate mode switch
              (uiMode/colorMode/screen*) or a density change must not rebuild the Activity mid-film — that
              closed the player and re-ran the startup popups. locale|layoutDirection are left out on
-             purpose: a script-family language switch still needs its one recreate (LocalizedContent). -->
+             purpose: a script-family language switch still needs its one recreate (LocalizedContent).
+             supportsPictureInPicture: Settings › Video player › Picture-in-picture when leaving the app;
+             the window resizes the activity, which screenSize|smallestScreenSize|screenLayout keep alive. -->
         <activity
             android:name=".MainActivityPetrol"
             android:banner="@drawable/mitsflix_banner"
@@ -98,6 +113,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Petrol"
             android:windowSoftInputMode="adjustPan">
@@ -127,6 +143,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Sunflower"
             android:windowSoftInputMode="adjustPan">
@@ -156,6 +173,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Cobalt"
             android:windowSoftInputMode="adjustPan">
@@ -185,6 +203,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Tomato"
             android:windowSoftInputMode="adjustPan">
@@ -214,6 +233,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Board"
             android:windowSoftInputMode="adjustPan">
@@ -243,6 +263,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Eggshell"
             android:windowSoftInputMode="adjustPan">
@@ -272,6 +293,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Olive"
             android:windowSoftInputMode="adjustPan">
@@ -301,6 +323,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.OliveCream"
             android:windowSoftInputMode="adjustPan">
@@ -331,6 +354,7 @@
             android:icon="@mipmap/mitsflix_icon"
             android:configChanges="keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize|screenLayout|orientation|uiMode|density|colorMode"
             android:launchMode="singleTop"
+            android:supportsPictureInPicture="true"
             android:roundIcon="@mipmap/mitsflix_icon"
             android:theme="@style/Theme.OwnTV.Starting.Pixel"
             android:windowSoftInputMode="adjustPan">
@@ -351,6 +375,28 @@
                     android:scheme="owntv" />
             </intent-filter>
         </activity>
+
+        <!-- Auto start (AutoStart.kt). Both run in the bare :autostart process, where OwnTVApp starts
+             nothing, so the wake listener does not keep the whole app in memory. The receiver is
+             exported because these are system broadcasts; the service is not. -->
+        <receiver
+            android:name=".features.autostart.AutoStartReceiver"
+            android:process=":autostart"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".features.autostart.WakeListenerService"
+            android:process=":autostart"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Listens for the screen turning on so the app can open when the TV wakes from sleep, a setting the user turns on." />
+        </service>
 
     </application>
 
