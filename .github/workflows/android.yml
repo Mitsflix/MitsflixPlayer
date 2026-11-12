@@ -358,3 +358,15 @@ jobs:
           # Must stay false: it appends GitHub's auto commit/PR list under the body, which buries the
           # short in-app notes the updater dialog shows.
           generate_release_notes: false
+
+      # Mitsflix: announce the release in Discord (only when the DISCORD_WEBHOOK secret is set).
+      - name: Announce in Discord
+        if: env.IS_TAG == 'true'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          python3 tools/mitsflix/discord_post.py \
+            --title "📺 Mitsflix Player ${{ github.ref_name }} is out" \
+            --url "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}" \
+            --notes-file dist/RELEASE_NOTES.md \
+            --footer "**Update:** open Mitsflix Player and tap **Update** when it pops up.\n**New install:** Downloader code **6284643**"
