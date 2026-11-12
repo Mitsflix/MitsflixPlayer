@@ -459,7 +459,12 @@ private fun DownloadItem(
 ) {
     val delete = StageAction(stringResource(R.string.common_delete), OwnTVIcon.TRASH) { onDelete(d) }
     val actions = if (gone && d.status == DownloadStatus.COMPLETED) listOf(delete) else when (d.status) {
-        DownloadStatus.COMPLETED -> listOf(StageAction(stringResource(R.string.content_downloads_external), OwnTVIcon.EXTERNAL) { wentExternal(); vm.playExternal(d) }, delete)
+        // Mitsflix: Play (in the app's own player) first, so it's clear a download can be watched here.
+        DownloadStatus.COMPLETED -> listOf(
+            StageAction(stringResource(R.string.content_play), OwnTVIcon.PLAY) { vm.play(d); if (!externalPlayerOn) onFullscreen() else wentExternal() },
+            StageAction(stringResource(R.string.content_downloads_external), OwnTVIcon.EXTERNAL) { wentExternal(); vm.playExternal(d) },
+            delete,
+        )
         DownloadStatus.FAILED -> listOf(StageAction(stringResource(R.string.common_retry), OwnTVIcon.REFRESH) { vm.retry(d) }, delete)
         DownloadStatus.PAUSED -> listOf(StageAction(stringResource(R.string.common_resume), OwnTVIcon.PLAY) { vm.resume(d) }, delete)
         DownloadStatus.RUNNING, DownloadStatus.QUEUED -> listOf(StageAction(stringResource(R.string.content_downloads_pause), OwnTVIcon.PAUSE) { vm.pause(d) }, delete)
@@ -614,7 +619,8 @@ internal fun StageDownloadRow(
             }
             Column(Modifier.width(380.mpx), horizontalAlignment = Alignment.End) {
                 status()
-                if (hasFocus && actions.isNotEmpty()) {
+                // Mitsflix: on a phone or tablet a tap moves no remote focus, so the buttons are always shown there.
+                if ((hasFocus || tv.own.owntv.ui.theme.MitsflixTheme.isTouchDevice()) && actions.isNotEmpty()) {
                     Row(Modifier.padding(top = 12.mpx), horizontalArrangement = Arrangement.spacedBy(8.mpx)) {
                         actions.forEachIndexed { i, a ->
                             StageSurface(
