@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings for Mitsflix-only features. Kept apart from mitsflix_brand_strings.xml, which is regenerated. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="mitsflix_start_import_ready">Press OK to load your channels, movies and series.</string>
+    <string name="mitsflix_start_import_missing">Fill in the details above first.</string>
+</resources>

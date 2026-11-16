@@ -589,6 +589,23 @@ fun AddSourceScreen(
             }
         }
 
+        // Mitsflix: Start import as a row of its own, so Down then OK is enough. The panel's button is
+        // only reachable with ▶, and on rows where ▶ changes a value people couldn't find it.
+        @Composable
+        fun startImportRow() = StageSettingRow(
+            icon = OwnTVIcon.DOWNLOADS,
+            title = submitLabel,
+            desc = stringResource(if (canStart) R.string.mitsflix_start_import_ready else R.string.mitsflix_start_import_missing),
+            value = if (canStart) SettingValue.Action(ok) else null,
+            onClick = { if (canStart) submit() },
+            help = SettingHelp(
+                submitLabel,
+                stringResource(if (canStart) R.string.mitsflix_start_import_ready else R.string.mitsflix_start_import_missing),
+                hints = listOf(ok to submitLabel, back to parent),
+            ),
+        )
+        startImportRow()
+
         StageSettingsHeading(stringResource(R.string.settings_form_optional), null)
         field(stringResource(R.string.setup_user_agent_optional), userAgent, { userAgent = it }, placeholder = stringResource(R.string.setup_user_agent_example))
         field(stringResource(R.string.setup_referer_optional), referer, { referer = it }, placeholder = stringResource(R.string.setup_referer_example))
@@ -683,6 +700,7 @@ fun AddSourceScreen(
                 help = help(hideTitle, hideDesc, switchKeys),
             )
         }
+        startImportRow()
     }
       // In-app, TV-safe file picker (SAF / system file picker is missing on many TVs).
       if (showFileBrowser) {

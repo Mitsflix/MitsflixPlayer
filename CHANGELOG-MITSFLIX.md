@@ -4,6 +4,9 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.2.2
+- **Adding a playlist is simpler:** a **Start import** row now sits right under your login details, and again at the bottom. Press Down to it, then OK
+
 ## v5.2.2.1
 - **Downloads on phones & tablets:** Resume, Pause, Retry and Delete buttons now show and can be tapped
 - **Play button on finished downloads** to watch them in the app, offline
