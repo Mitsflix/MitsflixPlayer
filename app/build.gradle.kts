@@ -57,6 +57,9 @@ android {
         buildConfigField("String", "MITSFLIX_DEFAULT_TMDB_KEY", "\"tmdb_key_applied\"")
         buildConfigField("String", "MITSFLIX_DEFAULT_TRENDING_KEY", "\"trending_rebuilt_v1\"")
         buildConfigField("String", "MITSFLIX_DEFAULT_LAYOUT_KEY", "\"categories_shown_v1\"")
+        buildConfigField("String", "MITSFLIX_DEFAULT_SUBS_KEY", "\"subs_server_applied\"")
+        // Subtitles: mitsflix.com's OpenSubtitles service (holds Mitsflix's own API key, like the Windows app).
+        buildConfigField("String", "MITSFLIX_SUBS_SERVER", "\"https://mitsflix.com/subs\"")
         // Mitsflix's own TMDB API key, from the TMDB_API_KEY repository secret. Blank = OwnTV's default.
         val mitsflixTmdbKey = (System.getenv("TMDB_API_KEY") ?: "").trim().filter { it.isLetterOrDigit() }
         buildConfigField("String", "MITSFLIX_TMDB_KEY", "\"$mitsflixTmdbKey\"")

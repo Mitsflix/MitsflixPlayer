@@ -62,6 +62,21 @@ object MitsflixDefaults {
             }
         }
 
+        // Subtitles through mitsflix.com's OpenSubtitles service. OwnTV's own subtitle service only fully
+        // serves official OwnTV builds. A user who set their own server or their own API key keeps it.
+        runCatching {
+            val settings = koin.get<SettingsRepository>()
+            val server = settings.currentOpenSubtitlesServerUrl()
+            val ownKey = settings.currentOpenSubtitlesApiKey()
+            val ours = BuildConfig.MITSFLIX_SUBS_SERVER
+            if (ownKey.isBlank() && (server.isBlank() || server == prefs.getString(SUBS_APPLIED, null)) && server != ours) {
+                settings.setOpenSubtitlesServerUrl(ours)
+            }
+            if (ownKey.isBlank() && (server.isBlank() || server == ours || server == prefs.getString(SUBS_APPLIED, null))) {
+                prefs.edit().putString(SUBS_APPLIED, ours).apply()
+            }
+        }
+
         // Now Trending: OwnTV only fetches it every 5–8 days, so an install that tried before the
         // Mitsflix TMDB key was in can sit without it for days. Rebuild it once, straight away.
         if (tmdbKey.isNotBlank() && !prefs.getBoolean(TRENDING_REBUILT, false)) {
@@ -114,4 +129,5 @@ object MitsflixDefaults {
     private val TMDB_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_TMDB_KEY
     private val TRENDING_REBUILT get() = BuildConfig.MITSFLIX_DEFAULT_TRENDING_KEY
     private val CATEGORIES_SHOWN get() = BuildConfig.MITSFLIX_DEFAULT_LAYOUT_KEY
+    private val SUBS_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_SUBS_KEY
 }
