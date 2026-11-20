@@ -24,8 +24,17 @@ def pinned_core() -> str:
     return m.group(1)
 
 
+def own_names() -> set:
+    """Strings Mitsflix words itself (mitsflix_error_strings.xml): never generate a duplicate of these."""
+    names = set()
+    for f in glob.glob(os.path.join(DST, "values*/mitsflix_error_strings.xml")):
+        names |= set(re.findall(r'name="([^"]+)"', open(f, encoding="utf-8").read()))
+    return names
+
+
 def main() -> None:
     ver = pinned_core()
+    own = own_names()
     tmp = tempfile.mkdtemp()
     try:
         subprocess.run(["git", "clone", "-q", "--depth", "1", "--branch", f"core-{ver}",
@@ -44,7 +53,7 @@ def main() -> None:
                         # The default accent is Mitsflix gold (ui/theme/MitsflixTheme.kt).
                         out.append('    <string name="settings_accent_teal">' + GOLD_NAME + "</string>")
                         continue
-                    if "OwnTV" in el and not SKIP.search(name):
+                    if "OwnTV" in el and not SKIP.search(name) and name not in own:
                         out.append("    " + el.replace("an OwnTV", "a " + NEW_NAME).replace("An OwnTV", "A " + NEW_NAME).replace("OwnTV", NEW_NAME))
             if not out:
                 continue

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mitsflix wording for connection, login and playback errors: what happened and what to do.
+     Overrides OwnTV core's English strings of the same name (other languages keep core's).
+     tools/mitsflix/rebrand_strings.py leaves these names alone. -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Adding or refreshing a playlist -->
+    <string name="sync_error_offline">You’re not connected to the internet. Check your Wi-Fi or network and try again.</string>
+    <string name="sync_error_generic">Something went wrong. Try again, and if it keeps happening, try your backup server address.</string>
+    <string name="sync_error_timeout">The server took too long to answer. Check your internet connection and try again. If it keeps happening, try your backup server address.</string>
+    <string name="sync_error_unreachable">That server address couldn’t be found. Check it’s typed exactly as you were given it, starting with http:// and with no / at the end.</string>
+    <string name="sync_error_connection">The server couldn’t be reached or cut the connection. Your internet provider may be blocking it: try your backup server address, or turn on a VPN and use your VPN server address.</string>
+    <string name="sync_error_interrupted">The download was cut off part-way. Try again. If it keeps happening, try your backup server address.</string>
+    <string name="sync_error_auth">Your username or password isn’t right. Re-enter them exactly as you were given them: they’re case-sensitive and have no spaces. On a VPN? Use your VPN server address.</string>
+    <string name="sync_error_not_found">There’s no IPTV server at that address. Check the server address is typed exactly, with no / at the end.</string>
+    <string name="sync_error_server">The server is having problems right now. It’s usually back within minutes. If it keeps happening, try your backup server address.</string>
+    <string name="sync_error_secure">The server didn’t accept a secure connection. If your server address starts with https://, change it to http:// and try again.</string>
+
+    <!-- Testing a playlist in Settings -->
+    <string name="settings_sources_test_auth">Your username or password isn’t right. Re-enter them exactly as you were given them: they’re case-sensitive and have no spaces.</string>
+    <string name="settings_sources_test_expired">This subscription has ended. Renew it with your provider: your login stays the same.</string>
+    <string name="settings_sources_test_unreachable">Couldn’t reach the server. Check your internet connection and the server address, or try your backup server address.</string>
+
+    <!-- Playing a channel or title -->
+    <string name="player_error_channel">This channel isn’t responding. It may be offline right now. Try another channel, or try again in a minute.</string>
+    <string name="player_error_lost_connection">Lost connection to this channel. Check your internet, then press Retry. If it keeps dropping, try your backup server address.</string>
+    <string name="player_error_no_internet">You’re not connected to the internet. Check your Wi-Fi or network and try again.</string>
+    <string name="player_error_stream_unavailable">This channel or title couldn’t be played. It may be offline right now, or your playlist is playing on another device (it works on one at a time). <xliff:g id="hint">%1$s</xliff:g></string>
+    <string name="player_error_account_in_use">Your playlist is already playing on another device. It works on one device at a time, so stop it there, then press Retry.</string>
+    <string name="player_error_mpv_stream_never_started">This stream didn’t start. It may be offline right now. Try another channel, or try again in a minute.</string>
+</resources>
