@@ -155,6 +155,8 @@ class OwnTVApp : Application(), SingletonImageLoader.Factory, androidx.work.Conf
         }
         // Mitsflix: Cloudflare DNS by default, and guides for playlists added before guides were automatic.
         appScope.launch { runCatching { MitsflixDefaults.apply(this@OwnTVApp) } }
+        // Mitsflix: English audio by default, per profile (watches for profile changes).
+        appScope.launch { runCatching { MitsflixDefaults.englishAudio(this@OwnTVApp) } }
         // Sports: core decides from Auto rebuild whether the stored board is due ("on every app start",
         // or older than the chosen hours). It reads one small file and touches no database.
         appScope.launch {

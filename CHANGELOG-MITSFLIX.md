@@ -4,6 +4,9 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.2.6
+- **English audio by default:** movies and shows with more than one audio track now start in English. Change it any time in Settings › Video player › Languages
+
 ## v5.2.2.5
 - **Setup:** "From another device" opens first time, instead of going back to the setup choices
 - **Clearer sync error:** when what arrived can't be read, the app now says to update both devices and pair them again

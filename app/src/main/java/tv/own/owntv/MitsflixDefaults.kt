@@ -121,6 +121,25 @@ object MitsflixDefaults {
         }
     }
 
+    /**
+     * English audio by default (when a title has more than one track), for each profile once: the
+     * preferred audio language is kept per profile, so every profile gets it the first time it's in use.
+     * A profile that already chose a language, or changes it later, keeps its own choice.
+     */
+    suspend fun englishAudio(context: Context) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val settings = GlobalContext.get().get<SettingsRepository>()
+        settings.activeProfileId.collect { id ->
+            if (id < 0) return@collect
+            val done = prefs.getStringSet(AUDIO_APPLIED, emptySet()).orEmpty()
+            if (id.toString() in done) return@collect
+            runCatching {
+                if (settings.preferredAudioLang.first().isBlank()) settings.setPreferredAudioLang(BuildConfig.MITSFLIX_DEFAULT_AUDIO_LANG)
+                prefs.edit().putStringSet(AUDIO_APPLIED, done + id.toString()).apply()
+            }
+        }
+    }
+
     // Preference names live in app/build.gradle.kts (no text literals in Kotlin for the i18n gate).
     private val PREFS get() = BuildConfig.MITSFLIX_DEFAULTS_PREFS
     private val DNS_CLOUDFLARE get() = BuildConfig.MITSFLIX_DEFAULT_DNS_KEY
@@ -130,4 +149,5 @@ object MitsflixDefaults {
     private val TRENDING_REBUILT get() = BuildConfig.MITSFLIX_DEFAULT_TRENDING_KEY
     private val CATEGORIES_SHOWN get() = BuildConfig.MITSFLIX_DEFAULT_LAYOUT_KEY
     private val SUBS_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_SUBS_KEY
+    private val AUDIO_APPLIED get() = BuildConfig.MITSFLIX_DEFAULT_AUDIO_KEY
 }
