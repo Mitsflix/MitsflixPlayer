@@ -32,6 +32,7 @@
     <string name="settings_live_tune_timeout_description">If a live channel has shown no picture by this time, Mitsflix Player stops trying and tells you, instead of leaving a black screen while it works through every player it has. Never keeps trying, which can take well over a minute on a channel your provider has removed. Waits your provider asks for are not counted.</string>
     <string name="settings_surround_forced_description">Surround — send Dolby/DTS to a real 5.1/7.1 receiver. If it goes silent or stutters, Mitsflix Player still falls back to stereo and tells you.</string>
     <string name="local_sync_error_unreachable">This device could not be reached. On it, open Mitsflix Player → More → Local sync and turn Sync mode on. Both devices must be on the same Wi-Fi.</string>
+    <string name="local_sync_error_bad_payload">What arrived could not be read. Make sure both devices have the latest Mitsflix Player, then remove this pairing on both (More → Local sync) and pair them again.</string>
     <string name="local_auto_sync_accept_body"><xliff:g id="device">%1$s</xliff:g> wants to sync with this device by itself whenever Mitsflix Player is open on both. Only what you allow on this device comes in, and either device can turn it off.</string>
     <string name="local_auto_sync_listen_description">On: paired devices can auto-sync with this one whenever Mitsflix Player is open here. Off: only while Sync mode is on.</string>
     <string name="settings_app_icon_summary">Color of the Mitsflix Player icon and logo</string>

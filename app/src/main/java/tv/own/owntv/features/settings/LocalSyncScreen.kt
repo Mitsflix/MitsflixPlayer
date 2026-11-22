@@ -314,12 +314,18 @@ fun SetupLocalSyncScreen(onRestored: () -> Unit, onBack: () -> Unit, modifier: M
     }
 
     val step = vm.step
+    // Mitsflix: leave only once this visit has shown a step and it was then cleared. Without this, the
+    // first frames after opening (or a step left cleared by an earlier failed try) sent the user straight
+    // back to the setup choice, so "From another device" had to be pressed twice.
+    var shown by remember { mutableStateOf(false) }
     LaunchedEffect(step, started) {
+        if (started && step != null) shown = true
         when {
             !started -> Unit
             // Cancelling any block clears the step, and on this screen that means leaving — there is
             // no device list underneath to fall back to.
-            step == null -> onBack()
+            step == null && shown -> onBack()
+            step == null -> vm.beginPairing()
             step is LocalSyncViewModel.Step.ChooseDirection -> vm.chooseDirection(SyncDirection.RECEIVE)
             else -> Unit
         }

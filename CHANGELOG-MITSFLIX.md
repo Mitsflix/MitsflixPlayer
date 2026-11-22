@@ -4,6 +4,10 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.2.5
+- **Setup:** "From another device" opens first time, instead of going back to the setup choices
+- **Clearer sync error:** when what arrived can't be read, the app now says to update both devices and pair them again
+
 ## v5.2.2.4
 - **Subtitles fixed:** OpenSubtitles search and downloads now go through Mitsflix's own subtitle service. Sign in once with your free OpenSubtitles account in Settings › OpenSubtitles
 
