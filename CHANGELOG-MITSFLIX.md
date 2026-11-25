@@ -4,6 +4,9 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.2.7
+- **Seek bar on touch screens:** tap anywhere on the bar to jump there, or drag the playhead and let go. The time left follows your finger while you drag. Remote and keyboard skipping work as before
+
 ## v5.2.2.6
 - **English audio by default:** movies and shows with more than one audio track now start in English. Change it any time in Settings › Video player › Languages
 

@@ -42,6 +42,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -400,7 +406,15 @@ private fun BoxScope.Playhead(frac: Float) {
 internal fun SeekBar(positionMs: Long, durationMs: Long, bufferedMs: Long, stepMs: Long, onSeek: (Long) -> Unit, focusRequester: FocusRequester? = null) {
     val interaction = remember { MutableInteractionSource() }
     val focused by interaction.collectIsFocusedAsState()
-    val frac = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
+    // Mitsflix: touch and mouse. Tap the bar to jump there; drag the playhead and let go to jump there
+    // (the preview follows your finger, and only the release seeks, so one drag is one reopen).
+    var dragFrac by remember { mutableStateOf<Float?>(null) }
+    val latestPos by rememberUpdatedState(positionMs)
+    val latestDur by rememberUpdatedState(durationMs)
+    val latestSeek by rememberUpdatedState(onSeek)
+    val seekToFrac: (Float) -> Unit = { f -> if (latestDur > 0) latestSeek((f.coerceIn(0f, 1f) * latestDur).toLong() - latestPos) }
+    val shownPos = dragFrac?.let { (it * durationMs).toLong() } ?: positionMs
+    val frac = if (durationMs > 0) (shownPos.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
     // The buffer ghost: how far ahead the engine has data. Never behind the playhead, so a stale or
     // unreported value simply draws nothing rather than a stripe that contradicts the fill.
     val bufferedFrac = if (durationMs > 0) (bufferedMs.toFloat() / durationMs).coerceIn(frac, 1f) else frac
@@ -416,14 +430,26 @@ internal fun SeekBar(positionMs: Long, durationMs: Long, bufferedMs: Long, stepM
                     else -> false
                 } else false
             }
-            .focusable(interactionSource = interaction),
+            .focusable(interactionSource = interaction)
+            .pointerInput(Unit) { detectTapGestures { o -> if (size.width > 0) seekToFrac(o.x / size.width) } }
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragStart = { o -> if (size.width > 0 && latestDur > 0) dragFrac = (o.x / size.width).coerceIn(0f, 1f) },
+                    onDragEnd = { dragFrac?.let(seekToFrac); dragFrac = null },
+                    onDragCancel = { dragFrac = null },
+                ) { change, dx ->
+                    change.consume()
+                    if (size.width > 0) dragFrac = ((dragFrac ?: 0f) + dx / size.width).coerceIn(0f, 1f)
+                }
+            },
         contentAlignment = Alignment.CenterStart,
     ) {
-        Box(Modifier.fillMaxWidth().height(if (focused) 6.dp else 4.dp).clip(RoundedCornerShape(50)).background(hudInk.copy(alpha = if (focused) 0.4f else 0.22f))) {
+        val active = focused || dragFrac != null
+        Box(Modifier.fillMaxWidth().height(if (active) 6.dp else 4.dp).clip(RoundedCornerShape(50)).background(hudInk.copy(alpha = if (active) 0.4f else 0.22f))) {
             Box(Modifier.fillMaxWidth(bufferedFrac).fillMaxHeight().clip(RoundedCornerShape(50)).background(hudInk.copy(alpha = 0.28f)))
             Box(Modifier.fillMaxWidth(frac).fillMaxHeight().clip(RoundedCornerShape(50)).background(hudAccent))
         }
-        if (focused) {
+        if (active) {
             Playhead(frac)
             // Time-remaining bubble above the thumb (elapsed is shown at the bar's left, total at the right,
             // so the bubble shows what's LEFT: "-12:34"). Uses a negative offset (not bottom padding) so it
@@ -434,7 +460,7 @@ internal fun SeekBar(positionMs: Long, durationMs: Long, bufferedMs: Long, stepM
                     Modifier.atFraction(frac).offset(y = (-32).dp).clip(RoundedCornerShape(8.dp)).background(hudShade(0.9f)).padding(horizontal = 8.dp, vertical = 3.dp),
                 ) {
                     Text(
-                        stringResource(R.string.player_time_remaining, formatTime((durationMs - positionMs).coerceAtLeast(0))),
+                        stringResource(R.string.player_time_remaining, formatTime((durationMs - shownPos).coerceAtLeast(0))),
                         style = tv.own.owntv.ui.theme.stageText(22, 700).copy(textDirection = TextDirection.Content),
                         color = hudInk,
                     )
