@@ -4,7 +4,7 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
-## v5.2.2.8
+## v5.2.2.9
 - **My teams search works straight away:** searching for a team (say "Packers") now finds it even before you've picked any leagues to follow. Leagues load faster too, and one that fails to load is tried again on your next search
 
 ## v5.2.2.7
