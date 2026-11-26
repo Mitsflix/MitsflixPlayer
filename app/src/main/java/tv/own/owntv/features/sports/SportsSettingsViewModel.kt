@@ -115,7 +115,7 @@ class SportsSettingsViewModel(
                     gate.acquire()
                     try {
                         runCatching { source.teams(league) }.onSuccess { teams ->
-                            teamsByLeague[key] = teams.map { t -> FollowedTeam(league.sport, t.id, t.name, t.abbreviation) to "${t.name} ${t.abbreviation}" }
+                            teamsByLeague[key] = teams.map { t -> FollowedTeam(league.sport, t.id, t.name, t.abbreviation) to listOf(t.name, t.abbreviation).joinToString() }
                         }
                     } finally { gate.release() }
                 }
