@@ -109,7 +109,7 @@ class SportsSettingsViewModel(
         val keys = followed.ifEmpty { SportsCatalog.leagues.mapTo(LinkedHashSet()) { it.key } }
         val gate = kotlinx.coroutines.sync.Semaphore(6)
         kotlinx.coroutines.coroutineScope {
-            keys.filter { it !in teamsByLeague }.map { key ->
+            keys.filter { !teamsByLeague.containsKey(it) }.map { key ->
                 async {
                     val league = SportsCatalog.league(key) ?: return@async
                     gate.acquire()
