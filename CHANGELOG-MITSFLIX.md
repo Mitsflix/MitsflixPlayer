@@ -4,6 +4,9 @@ OwnTV's updates are listed in CHANGELOG.md. Updates made only to Mitsflix Player
 number on top of the OwnTV version they're built on (v5.2.1.1, v5.2.1.2, …) and are listed here.
 The bullets under each version are what the app shows as "What's new".
 
+## v5.2.2.8
+- **My teams search works straight away:** searching for a team (say "Packers") now finds it even before you've picked any leagues to follow. Leagues load faster too, and one that fails to load is tried again on your next search
+
 ## v5.2.2.7
 - **Seek bar on touch screens:** tap anywhere on the bar to jump there, or drag the playhead and let go. The time left follows your finger while you drag. Remote and keyboard skipping work as before
 

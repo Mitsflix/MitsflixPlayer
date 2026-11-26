@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import tv.own.owntv.core.database.dao.SourceDao
 import tv.own.owntv.core.nav.MainSection
@@ -92,19 +94,35 @@ class SportsSettingsViewModel(
 
     fun suggestions(c: SportsConfig): List<SportsSuggestion> = SportsMemory.suggestions(c, c.followedLeagues())
 
-    /** Teams of the followed leagues, fetched once per page visit, for the My teams search. */
-    private var teamIndex: List<Pair<FollowedTeam, String>>? = null
+    /**
+     * Teams for the My teams search, kept per page visit for the leagues they came from.
+     * Mitsflix: with no leagues followed yet (every new profile), search every league instead of
+     * finding nothing; leagues are fetched a few at a time; a league that fails isn't remembered as
+     * empty, so the next search tries it again.
+     */
+    private val teamsByLeague = java.util.concurrent.ConcurrentHashMap<String, List<Pair<FollowedTeam, String>>>()
 
     suspend fun searchTeams(query: String): List<FollowedTeam> {
-        if (query.trim().length < 2) return emptyList()
-        val index = teamIndex ?: buildList {
-            for (key in config.value.followedLeagues()) {
-                val league = SportsCatalog.league(key) ?: continue
-                val teams: List<Team> = runCatching { source.teams(league) }.getOrDefault(emptyList())
-                teams.forEach { t -> add(FollowedTeam(league.sport, t.id, t.name, t.abbreviation) to t.name) }
-            }
-        }.distinctBy { it.first.key }.also { teamIndex = it }
-        val q = query.trim().lowercase()
-        return index.filter { (_, name) -> name.lowercase().contains(q) }.map { it.first }.take(30)
+        val q = query.trim().lowercase(Locale.ROOT)
+        if (q.length < 2) return emptyList()
+        val followed = config.value.followedLeagues()
+        val keys = followed.ifEmpty { SportsCatalog.leagues.mapTo(LinkedHashSet()) { it.key } }
+        val gate = kotlinx.coroutines.sync.Semaphore(6)
+        kotlinx.coroutines.coroutineScope {
+            keys.filter { it !in teamsByLeague }.map { key ->
+                async {
+                    val league = SportsCatalog.league(key) ?: return@async
+                    gate.acquire()
+                    try {
+                        runCatching { source.teams(league) }.onSuccess { teams ->
+                            teamsByLeague[key] = teams.map { t -> FollowedTeam(league.sport, t.id, t.name, t.abbreviation) to "${t.name} ${t.abbreviation}" }
+                        }
+                    } finally { gate.release() }
+                }
+            }.awaitAll()
+        }
+        return keys.asSequence().flatMap { teamsByLeague[it].orEmpty().asSequence() }
+            .filter { (_, words) -> words.lowercase(Locale.ROOT).contains(q) }
+            .map { it.first }.distinctBy { it.key }.take(30).toList()
     }
 }
